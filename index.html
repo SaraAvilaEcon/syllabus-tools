@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllabus Policy Prompt Generator · Sara Avila</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: #f7f4ef;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #3d2f20;
+    color: #f7f4ef;
+    padding: 2rem 2rem 1.5rem;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  header p {
+    font-size: 0.88rem;
+    color: #c8b89a;
+    font-style: italic;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .intro {
+    background: #eee9e0;
+    border-left: 4px solid #8a6f50;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 0.88rem;
+    color: #4a3f35;
+    line-height: 1.7;
+  }
+
+  .intro strong { font-weight: 600; }
+
+  .section { margin-bottom: 1.25rem; }
+
+  .section-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a7f72;
+    border-bottom: 1px solid #d4ccc0;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.9rem;
+    font-weight: 600;
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4a3f35;
+    margin-bottom: 0.4rem;
+  }
+
+  .hint {
+    font-size: 0.78rem;
+    color: #8a7f72;
+    font-style: italic;
+    margin-bottom: 0.4rem;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1.5px solid #d4ccc0;
+    border-radius: 6px;
+    background: #fdfaf6;
+    font-family: 'Lora', serif;
+    font-size: 0.88rem;
+    color: #1a1a1a;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #8a6f50;
+  }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 540px) {
+    .row2 { grid-template-columns: 1fr; }
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: #2a2a2a;
+    cursor: pointer;
+  }
+
+  input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #8a6f50;
+    flex-shrink: 0;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1.5px solid #ddd8ce;
+    margin: 1.5rem 0;
+  }
+
+  .generate-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: #3d2f20;
+    color: #f7f4ef;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .generate-btn:hover { background: #5a4530; }
+
+  .output-section {
+    display: none;
+    margin-top: 2rem;
+  }
+
+  .output-section.visible { display: block; }
+
+  .output-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a7f72;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .output-box {
+    background: #1e1a16;
+    color: #e8dfc8;
+    border-radius: 10px;
+    padding: 1.5rem 1.25rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: #4a3f35;
+    color: #e8dfc8;
+    border: none;
+    border-radius: 5px;
+    padding: 0.3rem 0.8rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .copy-btn:hover { background: #6a5a48; }
+
+  .next-steps {
+    margin-top: 1.25rem;
+    background: #eee9e0;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 0.85rem;
+    color: #4a3f35;
+    line-height: 1.7;
+  }
+
+  .next-steps strong { font-weight: 600; }
+
+  .next-steps a {
+    color: #8a6f50;
+    text-decoration: underline;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.78rem;
+    color: #a09080;
+    font-style: italic;
+    border-top: 1px solid #ddd8ce;
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Syllabus Policy Prompt Generator</h1>
+  <p>Module 3 · Best Practices for Syllabus Design · Sara Avila, University of Colorado Boulder</p>
+</header>
+
+<div class="container">
+
+  <div class="intro">
+    <strong>How to use this tool:</strong> Fill in the fields below with your course information. When you click <em>Generate prompt</em>, you will get a ready-to-use prompt that you can paste directly into <a href="https://claude.ai" target="_blank" style="color:#8a6f50;">Claude.ai</a> or another AI assistant. The AI will then write a draft attendance and late work policy tailored to your course — informed by Universal Design for Learning principles.
+  </div>
+
+  <!-- COURSE BASICS -->
+  <div class="section">
+    <div class="section-title">Course basics</div>
+    <div class="row2">
+      <div>
+        <label>Course name</label>
+        <input type="text" id="courseName" placeholder="e.g. Principles of Microeconomics">
+      </div>
+      <div>
+        <label>Course level</label>
+        <select id="courseLevel">
+          <option value="">— select —</option>
+          <option>Introductory (100-level)</option>
+          <option>Intermediate (200–300 level)</option>
+          <option>Upper division (400-level)</option>
+          <option>Graduate</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="row2">
+      <div>
+        <label>Enrollment size</label>
+        <select id="classSize">
+          <option value="">— select —</option>
+          <option>Small seminar (&lt;25)</option>
+          <option>Mid-size (25–60)</option>
+          <option>Large lecture (60+)</option>
+          <option>Online / hybrid</option>
+        </select>
+      </div>
+      <div>
+        <label>Delivery mode</label>
+        <select id="delivery">
+          <option value="">— select —</option>
+          <option>In-person only</option>
+          <option>Hybrid (some async)</option>
+          <option>Fully online</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ATTENDANCE -->
+  <div class="section">
+    <div class="section-title">Attendance</div>
+    <div class="row2">
+      <div>
+        <label>Free absences (no docs required)</label>
+        <div class="hint">How many sessions will you allow?</div>
+        <input type="number" id="freeAbsences" placeholder="e.g. 3 or 4" min="0" max="15">
+      </div>
+      <div>
+        <label>Participation % of final grade</label>
+        <div class="hint">Enter 0 if attendance is not graded</div>
+        <input type="number" id="participationPct" placeholder="e.g. 10" min="0" max="40">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <label>Participation modes you will accept</label>
+    <div class="hint">Check all that apply</div>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="p1"> In-class discussion</label>
+      <label><input type="checkbox" id="p2"> Short written reflections (Canvas / Google Doc)</label>
+      <label><input type="checkbox" id="p3"> Asynchronous discussion board posts</label>
+      <label><input type="checkbox" id="p4"> In-class problem-solving / application exercises</label>
+      <label><input type="checkbox" id="p5"> Perusall or social annotation</label>
+      <label><input type="checkbox" id="p6"> Attendance counts directly (no alternative modes)</label>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- LATE WORK -->
+  <div class="section">
+    <div class="section-title">Assignments & late work</div>
+    <label>Low-stakes assignments (can drop or extend freely)</label>
+    <div class="hint">e.g. problem sets, weekly quizzes, discussion posts</div>
+    <input type="text" id="lowStake" placeholder="e.g. Problem sets, weekly quizzes, Perusall discussions">
+  </div>
+
+  <div class="section">
+    <label>High-stakes assignments (firm deadlines)</label>
+    <div class="hint">e.g. Midterm Exam, Final Exam, research paper</div>
+    <input type="text" id="highStake" placeholder="e.g. Midterm Exam, Final Exam">
+  </div>
+
+  <div class="section">
+    <div class="row2">
+      <div>
+        <label>Drop lowest grade?</label>
+        <select id="dropLowest">
+          <option value="">— select —</option>
+          <option>Yes — drop 1 lowest</option>
+          <option>Yes — drop 2 lowest</option>
+          <option>No</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <div>
+        <label>No-questions-asked extensions</label>
+        <div class="hint">How many per semester?</div>
+        <input type="number" id="freeExtensions" placeholder="e.g. 2" min="0" max="10">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="row2">
+      <div>
+        <label>Extension window (hours)</label>
+        <div class="hint">How long is a standard extension?</div>
+        <input type="number" id="extensionHours" placeholder="e.g. 48" min="0">
+      </div>
+      <div>
+        <label>Late penalty (beyond free extensions)</label>
+        <div class="hint">Leave blank to let AI suggest one</div>
+        <input type="text" id="latePenalty" placeholder='e.g. 10% per day'>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TONE -->
+  <div class="section">
+    <div class="section-title">Tone & philosophy</div>
+    <label>Tone of the policy</label>
+    <select id="tone">
+      <option value="">— select —</option>
+      <option>Warm and student-centered</option>
+      <option>Neutral and professional</option>
+      <option>Economist — precise and incentive-focused</option>
+      <option>Firm but fair</option>
+    </select>
+  </div>
+
+  <div class="section">
+    <label>Anything else the AI should know?</label>
+    <textarea id="extra" rows="2" placeholder="e.g. students have SDS accommodations on file, university has a mandatory attendance policy I must reference…"></textarea>
+  </div>
+
+  <button class="generate-btn" onclick="generatePrompt()">Generate my prompt →</button>
+
+  <!-- OUTPUT -->
+  <div class="output-section" id="outputSection">
+    <div class="output-label">Your prompt — copy and paste into Claude.ai or your preferred AI assistant</div>
+    <div class="output-box">
+      <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+      <span id="promptText"></span>
+    </div>
+    <div class="next-steps">
+      <strong>Next step:</strong> Copy the prompt above, go to <a href="https://claude.ai" target="_blank">claude.ai</a>, paste it into the chat, and press send. Claude will generate a draft attendance and late work policy tailored to your course. You can then ask it to adjust the tone, length, or any specific detail.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Best Practices for Syllabus Design · Module 3 · Sara Avila, University of Colorado Boulder
+</footer>
+
+<script>
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+function checked(id) {
+  const el = document.getElementById(id);
+  return el && el.checked;
+}
+
+function generatePrompt() {
+  const courseName    = val('courseName')       || '[Course name]';
+  const level         = val('courseLevel')      || '[course level]';
+  const size          = val('classSize')        || '[class size — note if 60+ students]';
+  const delivery      = val('delivery')         || '[delivery mode]';
+  const freeAbs       = val('freeAbsences')     || '[N]';
+  const partPct       = val('participationPct');
+  const lowStake      = val('lowStake')         || '[list your low-stakes assignments]';
+  const highStake     = val('highStake')        || '[list high-stakes assignments, e.g. Midterm, Final Exam]';
+  const drop          = val('dropLowest')       || '[specify whether the lowest grade is dropped]';
+  const freeExt       = val('freeExtensions')   || '[N]';
+  const extHrs        = val('extensionHours')   || '[N]';
+  const latePen       = val('latePenalty')      || '[suggest an appropriate late penalty]';
+  const tone          = val('tone')             || 'warm and student-centered';
+  const extra         = val('extra');
+
+  const modes = [];
+  if (checked('p1')) modes.push('in-class discussion');
+  if (checked('p2')) modes.push('short written reflections submitted online');
+  if (checked('p3')) modes.push('asynchronous discussion board posts');
+  if (checked('p4')) modes.push('in-class application or problem-solving exercises');
+  if (checked('p5')) modes.push('Perusall social annotation');
+  if (checked('p6')) modes.push('physical attendance only (no alternative modes)');
+
+  const modesStr = modes.length > 0
+    ? modes.join(', ')
+    : '[specify which participation modes you will accept]';
+
+  const partGrade = partPct
+    ? `Participation and attendance are worth ${partPct}% of the final grade.`
+    : `[Decide whether participation is graded and what percentage it represents, or state that attendance is not graded.]`;
+
+  const extrasStr = extra ? `\nAdditional context: ${extra}` : '';
+
+  const prompt =
+`You are helping an Economics professor write two course policy sections for their syllabus: (1) an Attendance and Participation Policy and (2) a Late Work Policy.
+
+COURSE CONTEXT
+Course: ${courseName} | Level: ${level}
+Enrollment: ${size} | Format: ${delivery}
+
+PHILOSOPHY
+This professor has studied Universal Design for Learning (UDL) as a framework for equitable course design. The goal is not to lower standards, but to design policies that anticipate heterogeneous student constraints — work obligations, caregiving, health, transportation — while preserving meaningful incentives to engage. Flexibility should be built in advance, not negotiated case by case. Honest, timely communication is valued over documentation and excuse-policing.
+
+────────────────────────────────────────
+SECTION 1 — ATTENDANCE & PARTICIPATION POLICY
+────────────────────────────────────────
+
+Use the following parameters:
+
+• Free absences (no documentation required): ${freeAbs} sessions. Students do not need to explain or justify these.
+• After free absences are used: students should notify the professor by email before the missed class when possible, or within 24 hours afterward. No documentation is required — honest, timely communication is the expectation.
+• ${partGrade}
+• Accepted participation modes: ${modesStr}
+
+The policy should:
+- Clearly state why attendance matters (tie it to how the course is conducted and learning outcomes, following Kevin Gannon's principle that policy derives from philosophy)
+- Distinguish between attendance and participation — physical presence is a means to learning, not the objective itself
+- Specify what students should do if they miss class and what alternatives exist
+- Mention that students with SDS accommodations should contact the professor directly
+- Use a ${tone} tone
+
+────────────────────────────────────────
+SECTION 2 — LATE WORK POLICY
+────────────────────────────────────────
+
+Use the following parameters:
+
+• Low-stakes assignments (flexible): ${lowStake}
+  - Drop policy: ${drop}
+  - No-questions-asked extensions available: ${freeExt} per semester, each granting a ${extHrs}-hour window beyond the original deadline
+• High-stakes assignments (firm deadlines): ${highStake}
+  - These deadlines are fixed. Make-up options are available only in exceptional circumstances at the professor's discretion.
+• Late penalty beyond free extensions: ${latePen}
+
+The policy should:
+- Explain the rationale (deadlines impose unequal costs on students with different constraints; the design accounts for this without eliminating structure)
+- Be explicit about what is flexible and what is not — students should never be uncertain about which category an assignment falls into
+- Avoid requiring students to document or justify routine extension requests
+- Use the same ${tone} tone as the attendance policy${extrasStr}
+
+────────────────────────────────────────
+FORMAT
+────────────────────────────────────────
+
+Write each section as polished, student-facing syllabus prose (not bullet points). Each section should be 150–250 words. Use clear subheadings. The language should feel like it was written by a real professor who cares about their students and their subject — not a legal document and not a form.`;
+
+  document.getElementById('promptText').textContent = prompt;
+  const section = document.getElementById('outputSection');
+  section.classList.add('visible');
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+function copyPrompt() {
+  const text = document.getElementById('promptText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+
+</body>
+</html>
