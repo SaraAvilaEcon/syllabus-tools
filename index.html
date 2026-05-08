@@ -7,18 +7,19 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
 
+  /* AceleOnline brand: Green #67B31B · Blue #4472C4 */
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: 'Lora', Georgia, serif;
-    background: #f7f4ef;
+    background: #eaf0fb;
     color: #1a1a1a;
     min-height: 100vh;
   }
 
   header {
-    background: #3d2f20;
-    color: #f7f4ef;
+    background: #67B31B;
+    color: #ffffff;
     padding: 2rem 2rem 1.5rem;
   }
 
@@ -31,7 +32,7 @@
 
   header p {
     font-size: 0.88rem;
-    color: #c8b89a;
+    color: #d6f0a8;
     font-style: italic;
   }
 
@@ -42,13 +43,13 @@
   }
 
   .intro {
-    background: #eee9e0;
-    border-left: 4px solid #8a6f50;
+    background: #eef7e4;
+    border-left: 4px solid #4472C4;
     border-radius: 0 8px 8px 0;
     padding: 1rem 1.25rem;
     margin-bottom: 2rem;
     font-size: 0.88rem;
-    color: #4a3f35;
+    color: #1e3a1e;
     line-height: 1.7;
   }
 
@@ -60,8 +61,8 @@
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #8a7f72;
-    border-bottom: 1px solid #d4ccc0;
+    color: #3d6b0f;
+    border-bottom: 2px solid #67B31B;
     padding-bottom: 0.3rem;
     margin-bottom: 0.9rem;
     font-weight: 600;
@@ -73,13 +74,13 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #4a3f35;
+    color: #3d6b0f;
     margin-bottom: 0.4rem;
   }
 
   .hint {
     font-size: 0.78rem;
-    color: #8a7f72;
+    color: #5a7a5a;
     font-style: italic;
     margin-bottom: 0.4rem;
   }
@@ -90,9 +91,9 @@
   textarea {
     width: 100%;
     padding: 0.55rem 0.75rem;
-    border: 1.5px solid #d4ccc0;
+    border: 1.5px solid #b8d4f0;
     border-radius: 6px;
-    background: #fdfaf6;
+    background: #ffffff;
     font-family: 'Lora', serif;
     font-size: 0.88rem;
     color: #1a1a1a;
@@ -101,7 +102,8 @@
 
   input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: #8a6f50;
+    border-color: #4472C4;
+    box-shadow: 0 0 0 3px rgba(68,114,196,0.15);
   }
 
   .row2 {
@@ -135,21 +137,21 @@
   input[type="checkbox"] {
     width: 15px;
     height: 15px;
-    accent-color: #8a6f50;
+    accent-color: #67B31B;
     flex-shrink: 0;
   }
 
   .divider {
     border: none;
-    border-top: 1.5px solid #ddd8ce;
+    border-top: 2px solid rgba(68,114,196,0.25);
     margin: 1.5rem 0;
   }
 
   .generate-btn {
     width: 100%;
     padding: 0.9rem;
-    background: #3d2f20;
-    color: #f7f4ef;
+    background: #4472C4;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-family: 'Lora', serif;
@@ -161,7 +163,7 @@
     margin-top: 0.5rem;
   }
 
-  .generate-btn:hover { background: #5a4530; }
+  .generate-btn:hover { background: #2a4a8a; }
 
   .output-section {
     display: none;
@@ -174,14 +176,14 @@
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #8a7f72;
+    color: #3d6b0f;
     font-weight: 600;
     margin-bottom: 0.6rem;
   }
 
   .output-box {
-    background: #1e1a16;
-    color: #e8dfc8;
+    background: #2a4a8a;
+    color: #e8f0ff;
     border-radius: 10px;
     padding: 1.5rem 1.25rem 1.25rem;
     font-family: 'DM Mono', monospace;
@@ -195,8 +197,8 @@
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: #4a3f35;
-    color: #e8dfc8;
+    background: #67B31B;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     padding: 0.3rem 0.8rem;
@@ -206,22 +208,23 @@
     transition: background 0.2s;
   }
 
-  .copy-btn:hover { background: #6a5a48; }
+  .copy-btn:hover { background: #3d6b0f; }
 
   .next-steps {
     margin-top: 1.25rem;
-    background: #eee9e0;
-    border-radius: 8px;
+    background: #eef7e4;
+    border-left: 4px solid #67B31B;
+    border-radius: 0 8px 8px 0;
     padding: 1rem 1.25rem;
     font-size: 0.85rem;
-    color: #4a3f35;
+    color: #1e3a1e;
     line-height: 1.7;
   }
 
   .next-steps strong { font-weight: 600; }
 
   .next-steps a {
-    color: #8a6f50;
+    color: #4472C4;
     text-decoration: underline;
   }
 
@@ -229,9 +232,9 @@
     text-align: center;
     padding: 1.5rem;
     font-size: 0.78rem;
-    color: #a09080;
+    color: #ffffff;
     font-style: italic;
-    border-top: 1px solid #ddd8ce;
+    background: #67B31B;
     margin-top: 2rem;
   }
 </style>
